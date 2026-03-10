@@ -1,0 +1,1 @@
+# Agencia IA Diniz - Sistema de Agenda Cheia
