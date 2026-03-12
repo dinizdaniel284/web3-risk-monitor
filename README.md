@@ -24,7 +24,23 @@ Full-stack security platform leveraging AI for rapid audits of Smart Contracts a
 
 ---
 
-## 🏗️ Arquitetura do Fluxo / System Flow
+## 📺 Preview
+*(Adicione seus prints aqui / Add your screenshots here)*
+> **Note:** Screenshots showing the EOA validation and USDT analysis are available in the project documentation.
+
+---
+
+## ⚙️ Como Funciona / How it Works
+
+1.  **Connection:** User connects their wallet via MetaMask.
+2.  **Input:** User provides a Smart Contract address.
+3.  **Data Fetching:** Backend retrieves real-time blockchain data via Ethers.js.
+4.  **AI Analysis:** Custom AI Engine evaluates patterns for proxies and centralization.
+5.  **Report:** System generates a 0-100 risk score and a detailed report.
+
+---
+
+## 🏗️ Arquitetura / System Flow
 
 ```mermaid
 graph LR
@@ -34,26 +50,27 @@ graph LR
   C --> E[AI Analysis Engine]
   E --> F[Supabase DB]
   F --> B
-🛠️ Especificações Técnicas / Technical Specs
-EOA/Contract Validation: Algoritmo de detecção automática de tipo de endereço (Carteira vs Contrato).
-Proxy Detection: Identificação de contratos alteráveis (upgradable) que representam risco de governança.
-AI Risk Scoring: Relatórios descritivos gerados por IA com pontuação de risco de 0 a 100.
-Web3 Integration: Conexão nativa via MetaMask e suporte multichain (Ethereum, Polygon, Sepolia).
+🚀 Como Rodar / Getting Started
+
+# Clone o repositório / Clone the repo
+git clone [https://github.com/dinizdaniel284/web3-risk-monitor.git](https://github.com/dinizdaniel284/web3-risk-monitor.git)
+
+# Instale as dependências / Install dependencies
+npm install
+
+# Inicie o modo de desenvolvimento / Run dev mode
+npm run dev
+
 🚀 Roadmap & Future Features
 [ ] Smart Contract Bytecode Analysis: Deep scanning of unverified contracts.
-[ ] Automated Alerts: Telegram/Discord integration for real-time monitoring.
-[ ] DeFi Protocol Risk Detection: Advanced liquidity and rug-pull analysis.
+[ ] Public API: Endpoint for third-party contract scanning.
+[ ] Browser Extension: Real-time risk alerts during swaps.
 ⚠️ Disclaimer / Aviso Legal
-PT: Esta ferramenta fornece análise automatizada e não substitui uma auditoria formal de segurança. Use apenas para fins informativos.
-EN: This tool provides automated analysis and should not replace a full smart contract audit. Use for informational purposes only.
-🏗️ Infraestrutura / Infrastructure
-Frontend: Next.js (Vercel)
-Backend: Node.js & TypeScript (Render)
-Database: Supabase (PostgreSQL)
+PT: Esta ferramenta fornece análise automatizada e não substitui uma auditoria formal.
+EN: This tool provides automated analysis and should not replace a full smart contract audit.
 👨‍💻 Author / Desenvolvedor
 Daniel Roberto Diniz - CEO Agência IA Diniz
 Student of Systems Analysis and Development (ADS)
 <p align="center">
 <b>🔗 Live Demo:</b> <a href="https://web3-risk-monitor-zewe.vercel.app/">web3-risk-monitor-zewe.vercel.app</a>
 </p>
-
