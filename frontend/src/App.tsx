@@ -3,12 +3,12 @@ import { ConnectButton, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { useAccount, useBalance } from 'wagmi';
 import { Shield, Globe, Wallet, Languages, Search, History, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner'; // Importação do toast
 import './i18n/index';
 
 import { useRiskAnalysis } from './hooks/useRiskAnalysis';
 import RiskCard from './components/RiskCard';
 
-// AJUSTE PARA DEPLOY: Define a URL do backend (usa localhost se não houver variável de ambiente)
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export default function App() {
@@ -40,6 +40,7 @@ export default function App() {
   const toggleLanguage = () => {
     const newLang = i18n.language === 'pt' ? 'en' : 'pt';
     i18n.changeLanguage(newLang);
+    toast.info(newLang === 'en' ? 'Language: English' : 'Idioma: Português');
   };
 
   const salvarNoBanco = async (contract: string, score: number, alertSignals: string[]) => {
@@ -51,23 +52,28 @@ export default function App() {
       });
       carregarHistorico(); 
     } catch (error) {
+      toast.error("Database sync failed");
       console.error("❌ Erro na sincronização");
     }
   };
 
   const handleStartMonitor = async () => {
     if (!contractInput.startsWith('0x') || contractInput.length !== 42) {
-      alert(t('invalid_addr'));
+      toast.error(t('invalid_addr')); // Troca do alert por toast
       return;
     }
 
     setIsAnalyzing(true);
+    const toastId = toast.loading("Analyzing contract security...");
+
     try {
       const result = await analyzeContract(contractInput); 
       if (result) {
         await salvarNoBanco(contractInput, result.score, result.signals);
+        toast.success("Analysis complete!", { id: toastId });
       }
     } catch (error) {
+      toast.error("Analysis failed. Please try again.", { id: toastId });
       console.error("Erro na análise:", error);
     } finally {
       setIsAnalyzing(false);
@@ -110,7 +116,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* Monitor Card */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-16">
             <div className="bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-10 shadow-2xl">
               <h2 className="text-3xl font-bold mb-4 text-white">{t('risk_monitor_title')}</h2>
@@ -128,7 +133,6 @@ export default function App() {
             <RiskCard score={riskScore} signals={signals} />
           </div>
 
-          {/* History Table */}
           <div className="bg-slate-900/50 border border-slate-800 rounded-3xl p-8 shadow-inner">
             <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
               <History size={20} className="text-blue-400" />
@@ -181,4 +185,5 @@ export default function App() {
       </div>
     </RainbowKitProvider>
   );
-}
+        }
+                  
