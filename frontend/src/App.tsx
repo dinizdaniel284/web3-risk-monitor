@@ -40,7 +40,6 @@ export default function App() {
   const toggleLanguage = () => {
     const newLang = i18n.language === 'pt' ? 'en' : 'pt';
     i18n.changeLanguage(newLang);
-    // Usamos um ID fixo para o toast de idioma não acumular se clicar várias vezes
     toast.info(newLang === 'en' ? 'Language: English' : 'Idioma: Português', { id: 'lang-toast' });
   };
 
@@ -59,17 +58,13 @@ export default function App() {
   };
 
   const handleStartMonitor = async () => {
-    // 1. Validação básica
     if (!contractInput.startsWith('0x') || contractInput.length !== 42) {
       toast.error(t('invalid_addr'), { id: 'validation-error' });
       return;
     }
 
-    // 2. Limpa alertas antigos e inicia o estado de loading
     toast.dismiss(); 
     setIsAnalyzing(true);
-    
-    // Criamos o toast de carregamento com um ID único
     const toastId = toast.loading("Analyzing contract security...");
 
     try {
@@ -77,14 +72,14 @@ export default function App() {
       
       if (result) {
         await salvarNoBanco(contractInput, result.score, result.signals);
-        // Atualiza o MESMO toast para sucesso em vez de criar um novo
-        toast.success("Analysis complete!", { id: toastId });
+        // Ajustado duration para 4 segundos para não sumir rápido demais
+        toast.success("Analysis complete!", { id: toastId, duration: 4000 });
       } else {
         toast.dismiss(toastId);
       }
     } catch (error) {
-      // Atualiza o MESMO toast para erro
-      toast.error("Analysis failed. Please try again.", { id: toastId });
+      // Ajustado duration para 5 segundos em caso de erro
+      toast.error("Analysis failed. Please try again.", { id: toastId, duration: 5000 });
       console.error("Erro na análise:", error);
     } finally {
       setIsAnalyzing(false);
@@ -93,7 +88,6 @@ export default function App() {
 
   return (
     <RainbowKitProvider locale={i18n.language === 'pt' ? 'pt-BR' : 'en-US'}>
-      {/* Adicionado o componente Toaster para renderizar os alertas corretamente */}
       <Toaster position="top-center" richColors closeButton />
       
       <div className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-20">
@@ -114,7 +108,6 @@ export default function App() {
         </nav>
 
         <main className="max-w-7xl mx-auto px-4 py-12">
-          {/* Status Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-blue-500/30 transition-colors">
               <h3 className="font-semibold flex items-center gap-2"><Shield size={18} className="text-blue-400" />{t('conn_status')}</h3>
@@ -199,4 +192,5 @@ export default function App() {
       </div>
     </RainbowKitProvider>
   );
-              }
+}
+
