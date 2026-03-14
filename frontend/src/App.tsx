@@ -9,7 +9,10 @@ import './i18n/index';
 import { useRiskAnalysis } from './hooks/useRiskAnalysis';
 import RiskCard from './components/RiskCard';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// Tenta pegar a URL de qualquer variável disponível na Vercel
+const API_URL = import.meta.env.VITE_API_URL || 
+                import.meta.env.NEXT_PUBLIC_API_URL || 
+                'https://web3-risk-monitor-backend.vercel.app'; // <--- Troque pelo seu link oficial do backend
 
 export default function App() {
   const { address, isConnected } = useAccount();
@@ -23,7 +26,6 @@ export default function App() {
     address: address as `0x${string}` | undefined 
   });
 
-  // Carrega histórico apenas do usuário logado
   const carregarHistorico = useCallback(async () => {
     if (!address) {
       setHistory([]);
@@ -32,6 +34,7 @@ export default function App() {
     
     try {
       const response = await fetch(`${API_URL}/api/history?user=${address}`);
+      if (!response.ok) throw new Error('Falha no histórico');
       const data = await response.json();
       setHistory(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -43,14 +46,7 @@ export default function App() {
     carregarHistorico();
   }, [carregarHistorico]);
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'pt' ? 'en' : 'pt';
-    i18n.changeLanguage(newLang);
-    toast.info(newLang === 'en' ? 'Language: English' : 'Idioma: Português', { id: 'lang-toast' });
-  };
-
   const salvarNoBanco = async (contract: string, score: number, alertSignals: string[]) => {
-    // SÓ SALVA SE ESTIVER CONECTADO (Evita lixo e análises anônimas no DB)
     if (!address) return;
 
     try {
@@ -61,12 +57,12 @@ export default function App() {
           address: contract, 
           score, 
           signals: alertSignals,
-          user_address: address // Vincula a análise ao dono
+          user_address: address 
         })
       });
       carregarHistorico(); 
     } catch (error) {
-      console.error("Erro ao salvar:", error);
+      console.error("Erro ao salvar no banco:", error);
     }
   };
 
@@ -85,14 +81,13 @@ export default function App() {
       const result = await analyzeContract(contractInput); 
       
       if (result) {
-        // Salva apenas se houver carteira, mas mostra o resultado para todos
         if (isConnected) {
           await salvarNoBanco(contractInput, result.score, result.signals);
         }
         
         toast.success("Análise concluída!", { 
           id: toastId, 
-          duration: 6000, // Travado em 6 segundos
+          duration: 6000, 
           description: isConnected ? "Salvo no seu histórico." : "Conecte a carteira para salvar."
         });
       } else {
@@ -107,14 +102,13 @@ export default function App() {
 
   return (
     <RainbowKitProvider locale={i18n.language === 'pt' ? 'pt-BR' : 'en-US'}>
-      {/* Visual de Nuvem/Vidro Forçado */}
       <Toaster 
         position="top-center" 
         richColors 
         closeButton
         toastOptions={{
           style: {
-            background: 'rgba(15, 23, 42, 0.8)',
+            background: 'rgba(15, 23, 42, 0.85)',
             backdropFilter: 'blur(12px) saturate(180%)',
             WebkitBackdropFilter: 'blur(12px) saturate(180%)',
             border: '1px solid rgba(59, 130, 246, 0.3)',
@@ -126,49 +120,41 @@ export default function App() {
       />
       
       <div className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-20">
-        <nav className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white">AD</div>
-              <span className="font-bold text-xl">{t('title')}</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <button onClick={toggleLanguage} className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 text-sm">
-                {i18n.language?.toUpperCase() || 'PT'}
-              </button>
-              <ConnectButton />
-            </div>
+        {/* Header e Main seguem o mesmo padrão que você já tem... */}
+        <nav className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50 h-16 flex items-center justify-between px-4">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold">AD</div>
+            <span className="font-bold text-xl">{t('title')}</span>
+          </div>
+          <div className="flex items-center gap-4">
+             <ConnectButton />
           </div>
         </nav>
 
         <main className="max-w-7xl mx-auto px-4 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             <div className="bg-slate-900 border border-slate-800 rounded-3xl p-10">
-              <h2 className="text-3xl font-bold mb-4 text-white">{t('risk_monitor_title')}</h2>
+              <h2 className="text-3xl font-bold mb-4">{t('risk_monitor_title')}</h2>
               <div className="space-y-4">
-                <div className="relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
-                  <input 
-                    type="text" 
-                    value={contractInput} 
-                    onChange={(e) => setContractInput(e.target.value)} 
-                    placeholder={t('placeholder_contract')} 
-                    className="bg-slate-950 border border-slate-700 pl-12 pr-4 py-4 rounded-xl w-full text-white outline-none focus:ring-2 focus:ring-blue-600" 
-                  />
-                </div>
+                <input 
+                  type="text" 
+                  value={contractInput} 
+                  onChange={(e) => setContractInput(e.target.value)} 
+                  placeholder={t('placeholder_contract')} 
+                  className="bg-slate-950 border border-slate-700 p-4 rounded-xl w-full text-white outline-none focus:ring-2 focus:ring-blue-600" 
+                />
                 <button 
                   onClick={handleStartMonitor} 
                   disabled={isAnalyzing} 
-                  className="bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-xl font-bold w-full disabled:opacity-50"
+                  className="bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-xl font-bold w-full"
                 >
-                  {isAnalyzing ? "Analisando..." : t('btn_monitor')}
+                  {isAnalyzing ? "Processando..." : t('btn_monitor')}
                 </button>
               </div>
             </div>
             <RiskCard score={riskScore} signals={signals} />
           </div>
 
-          {/* Histórico Filtrado */}
           <div className="bg-slate-900/50 border border-slate-800 rounded-3xl p-8">
             <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-blue-400">
               <History size={20} />
@@ -186,14 +172,9 @@ export default function App() {
                 <tbody className="divide-y divide-slate-800">
                   {history.map((item) => (
                     <tr key={item.id} className="hover:bg-slate-800/30">
-                      <td className="py-4 font-mono text-sm">
-                        {item.address.slice(0, 10)}...{item.address.slice(-8)}
-                      </td>
+                      <td className="py-4 font-mono text-sm">{item.address.slice(0, 10)}...</td>
                       <td className="py-4 text-center">
-                        <span className={`px-2 py-1 rounded text-xs font-bold ${
-                          item.score >= 80 ? 'text-green-500' : 
-                          item.score >= 50 ? 'text-yellow-500' : 'text-red-500'
-                        }`}>
+                        <span className={item.score >= 50 ? 'text-green-500' : 'text-red-500'}>
                           {item.score}/100
                         </span>
                       </td>
@@ -202,11 +183,8 @@ export default function App() {
                       </td>
                     </tr>
                   ))}
-                  {!isConnected && (
-                    <tr><td colSpan={3} className="py-12 text-center text-slate-500 italic">Conecte sua carteira para ver seu histórico pessoal.</td></tr>
-                  )}
                   {isConnected && history.length === 0 && (
-                    <tr><td colSpan={3} className="py-12 text-center text-slate-500 italic">Nenhuma análise encontrada.</td></tr>
+                    <tr><td colSpan={3} className="py-12 text-center text-slate-500">Nenhuma análise encontrada.</td></tr>
                   )}
                 </tbody>
               </table>
@@ -216,5 +194,4 @@ export default function App() {
       </div>
     </RainbowKitProvider>
   );
-    }
-                
+}
