@@ -63,17 +63,21 @@ export default function App() {
     }
 
     setIsAnalyzing(true);
-    const toastId = toast.loading("Analyzing contract security...");
+    // Loading também com estilo de nuvem
+    const toastId = toast.loading("Analyzing contract security...", {
+      description: "Agência IA Diniz processando dados...",
+    });
 
     try {
       const result = await analyzeContract(contractInput); 
       
       if (result) {
         await salvarNoBanco(contractInput, result.score, result.signals);
-        // Persistência de 6 segundos e efeito de nuvem aplicado via Toaster
+        // Sucesso forçando 6 segundos e mantendo o ID para não criar outro
         toast.success("Analysis complete!", { 
           id: toastId, 
-          duration: 6000 
+          duration: 6000,
+          description: "O relatório de risco foi atualizado com sucesso."
         });
       } else {
         toast.dismiss(toastId);
@@ -90,19 +94,20 @@ export default function App() {
 
   return (
     <RainbowKitProvider locale={i18n.language === 'pt' ? 'pt-BR' : 'en-US'}>
-      {/* Configuração do Toaster com visual de nuvem/vidro */}
+      {/* Configuração do Toaster com visual de Vidro/Nuvem Forçado */}
       <Toaster 
         position="top-center" 
         richColors 
         closeButton
         toastOptions={{
           style: {
-            background: 'rgba(15, 23, 42, 0.7)', 
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(59, 130, 246, 0.3)',
+            background: 'rgba(15, 23, 42, 0.75)', // Slate-900 com transparência
+            backdropFilter: 'blur(16px) saturate(180%)', // Desfoque de fundo
+            WebkitBackdropFilter: 'blur(16px) saturate(180%)', // Correção para iPhone
+            border: '1px solid rgba(59, 130, 246, 0.2)', // Bordinha azul sutil
             color: '#fff',
-            borderRadius: '20px',
-            boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+            borderRadius: '24px', // Formato de cápsula/nuvem
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
           },
         }}
       />
