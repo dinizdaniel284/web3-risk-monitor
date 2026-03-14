@@ -62,7 +62,6 @@ export default function App() {
       return;
     }
 
-    // Não damos dismiss() em tudo aqui para não causar "pulo" na tela
     setIsAnalyzing(true);
     const toastId = toast.loading("Analyzing contract security...");
 
@@ -71,7 +70,7 @@ export default function App() {
       
       if (result) {
         await salvarNoBanco(contractInput, result.score, result.signals);
-        // Aumentamos para 6 segundos e garantimos a persistência
+        // Persistência de 6 segundos e efeito de nuvem aplicado via Toaster
         toast.success("Analysis complete!", { 
           id: toastId, 
           duration: 6000 
@@ -91,19 +90,19 @@ export default function App() {
 
   return (
     <RainbowKitProvider locale={i18n.language === 'pt' ? 'pt-BR' : 'en-US'}>
-      {/* Estilização tipo Nuvem / Glassmorphism */}
+      {/* Configuração do Toaster com visual de nuvem/vidro */}
       <Toaster 
         position="top-center" 
         richColors 
         closeButton
         toastOptions={{
           style: {
-            background: 'rgba(15, 23, 42, 0.8)', // slate-900 com transparência
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(59, 130, 246, 0.2)', // borda azul suave
+            background: 'rgba(15, 23, 42, 0.7)', 
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(59, 130, 246, 0.3)',
             color: '#fff',
-            borderRadius: '16px',
-            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px',
+            boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
           },
         }}
       />
@@ -211,5 +210,4 @@ export default function App() {
       </div>
     </RainbowKitProvider>
   );
-              }
-                          
+}
