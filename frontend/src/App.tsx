@@ -53,7 +53,6 @@ export default function App() {
       carregarHistorico(); 
     } catch (error) {
       toast.error("Database sync failed");
-      console.error("❌ Erro na sincronização");
     }
   };
 
@@ -63,7 +62,7 @@ export default function App() {
       return;
     }
 
-    toast.dismiss(); 
+    // Não damos dismiss() em tudo aqui para não causar "pulo" na tela
     setIsAnalyzing(true);
     const toastId = toast.loading("Analyzing contract security...");
 
@@ -72,15 +71,19 @@ export default function App() {
       
       if (result) {
         await salvarNoBanco(contractInput, result.score, result.signals);
-        // Ajustado duration para 4 segundos para não sumir rápido demais
-        toast.success("Analysis complete!", { id: toastId, duration: 4000 });
+        // Aumentamos para 6 segundos e garantimos a persistência
+        toast.success("Analysis complete!", { 
+          id: toastId, 
+          duration: 6000 
+        });
       } else {
         toast.dismiss(toastId);
       }
     } catch (error) {
-      // Ajustado duration para 5 segundos em caso de erro
-      toast.error("Analysis failed. Please try again.", { id: toastId, duration: 5000 });
-      console.error("Erro na análise:", error);
+      toast.error("Analysis failed. Please try again.", { 
+        id: toastId, 
+        duration: 6000 
+      });
     } finally {
       setIsAnalyzing(false);
     }
@@ -88,7 +91,22 @@ export default function App() {
 
   return (
     <RainbowKitProvider locale={i18n.language === 'pt' ? 'pt-BR' : 'en-US'}>
-      <Toaster position="top-center" richColors closeButton />
+      {/* Estilização tipo Nuvem / Glassmorphism */}
+      <Toaster 
+        position="top-center" 
+        richColors 
+        closeButton
+        toastOptions={{
+          style: {
+            background: 'rgba(15, 23, 42, 0.8)', // slate-900 com transparência
+            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(59, 130, 246, 0.2)', // borda azul suave
+            color: '#fff',
+            borderRadius: '16px',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.4)',
+          },
+        }}
+      />
       
       <div className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-20">
         <nav className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
@@ -108,6 +126,7 @@ export default function App() {
         </nav>
 
         <main className="max-w-7xl mx-auto px-4 py-12">
+          {/* Status Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-blue-500/30 transition-colors">
               <h3 className="font-semibold flex items-center gap-2"><Shield size={18} className="text-blue-400" />{t('conn_status')}</h3>
@@ -192,5 +211,5 @@ export default function App() {
       </div>
     </RainbowKitProvider>
   );
-}
-
+              }
+                          
