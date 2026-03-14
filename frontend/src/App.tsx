@@ -3,7 +3,7 @@ import { ConnectButton, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { useAccount, useBalance } from 'wagmi';
 import { Shield, Globe, Wallet, Languages, Search, History, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner'; // Importação do toast
+import { toast, Toaster } from 'sonner'; 
 import './i18n/index';
 
 import { useRiskAnalysis } from './hooks/useRiskAnalysis';
@@ -40,7 +40,8 @@ export default function App() {
   const toggleLanguage = () => {
     const newLang = i18n.language === 'pt' ? 'en' : 'pt';
     i18n.changeLanguage(newLang);
-    toast.info(newLang === 'en' ? 'Language: English' : 'Idioma: Português');
+    // Usamos um ID fixo para o toast de idioma não acumular se clicar várias vezes
+    toast.info(newLang === 'en' ? 'Language: English' : 'Idioma: Português', { id: 'lang-toast' });
   };
 
   const salvarNoBanco = async (contract: string, score: number, alertSignals: string[]) => {
@@ -58,21 +59,31 @@ export default function App() {
   };
 
   const handleStartMonitor = async () => {
+    // 1. Validação básica
     if (!contractInput.startsWith('0x') || contractInput.length !== 42) {
-      toast.error(t('invalid_addr')); // Troca do alert por toast
+      toast.error(t('invalid_addr'), { id: 'validation-error' });
       return;
     }
 
+    // 2. Limpa alertas antigos e inicia o estado de loading
+    toast.dismiss(); 
     setIsAnalyzing(true);
+    
+    // Criamos o toast de carregamento com um ID único
     const toastId = toast.loading("Analyzing contract security...");
 
     try {
       const result = await analyzeContract(contractInput); 
+      
       if (result) {
         await salvarNoBanco(contractInput, result.score, result.signals);
+        // Atualiza o MESMO toast para sucesso em vez de criar um novo
         toast.success("Analysis complete!", { id: toastId });
+      } else {
+        toast.dismiss(toastId);
       }
     } catch (error) {
+      // Atualiza o MESMO toast para erro
       toast.error("Analysis failed. Please try again.", { id: toastId });
       console.error("Erro na análise:", error);
     } finally {
@@ -82,6 +93,9 @@ export default function App() {
 
   return (
     <RainbowKitProvider locale={i18n.language === 'pt' ? 'pt-BR' : 'en-US'}>
+      {/* Adicionado o componente Toaster para renderizar os alertas corretamente */}
+      <Toaster position="top-center" richColors closeButton />
+      
       <div className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-20">
         <nav className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -185,5 +199,4 @@ export default function App() {
       </div>
     </RainbowKitProvider>
   );
-        }
-                  
+              }
