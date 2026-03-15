@@ -1,55 +1,124 @@
 # 🛡️ Web3 Risk Monitor — Agência IA Diniz
 
-<p align="center">
-  <img src="https://img.shields.io/badge/STATUS-EM_DESENVOLVIMENTO-0078D4?style=for-the-badge" alt="Status">
-  <img src="https://img.shields.io/badge/WEB3-SECURITY-222222?style=for-the-badge&logo=ethereum" alt="Web3">
-  <img src="https://img.shields.io/badge/NEXT.JS-14-black?style=for-the-badge&logo=nextdotjs" alt="NextJS">
-</p>
+![Demo](./assets/demo.gif)
+
+Al-powered smart contract risk analyzer with real-time history tracking and multi-chain support.
 
 ---
 
-### 🚀 Live Demo
-> **Acesse a aplicação:** [https://web3-risk-monitor-zewe.vercel.app/](https://web3-risk-monitor-zewe.vercel.app/)
-> *Deployment powered by Vercel* 🌍
+## 🚀 Live Demo
+
+Acesse a aplicação:
+
+https://web3-risk-monitor-zewe.vercel.app/
+
+Deployment powered by Vercel 🌍
 
 ---
 
-## 🌍 Sobre o Projeto | About the Project
+## 🌍 About the Project
 
-**🇧🇷 Português**
-Plataforma de segurança para análise de Smart Contracts. Identifica vulnerabilidades, padrões suspeitos e gera um score de risco de 0 a 100.
+### 🇧🇷 Português
 
-**🇺🇸 English**
-Security platform for Smart Contract analysis. It detects vulnerabilities, suspicious patterns, and generates a risk score from 0 to 100.
+O **Web3 Risk Monitor** é uma plataforma de segurança para análise de **Smart Contracts**.
+
+A ferramenta analisa contratos na blockchain e identifica padrões de risco como:
+
+- contratos com dono (centralização)
+- proxies atualizáveis
+- carteiras comuns enviadas como contrato
+- padrões suspeitos de governança
+
+Com base nesses sinais, o sistema gera uma **pontuação de risco de 0 a 100**.
 
 ---
 
-## 🏗 Arquitetura & Tech Stack
+### 🇺🇸 English
 
-* **Frontend:** Next.js (App Router), Tailwind CSS
-* **Web3:** Ethers.js, MetaMask Integration
-* **Backend:** Node.js & Supabase DB
+**Web3 Risk Monitor** is a security platform for **smart contract analysis**.
+
+The system analyzes blockchain contracts and detects risk patterns such as:
+
+- contract ownership (centralization risk)
+- upgradeable proxy contracts
+- wallet vs contract detection
+- suspicious governance patterns
+
+Based on these signals, a **risk score from 0 to 100** is generated.
 
 ---
 
-## 🚀 Começando | Getting Started
+## ⚙️ How It Works
 
-```bash
-# Clone o repositório
-git clone [https://github.com/dinizdaniel284/web3-risk-monitor.git](https://github.com/dinizdaniel284/web3-risk-monitor.git)
+1. User connects wallet
+2. Contract address is inserted
+3. Blockchain data is queried
+4. Security signals are analyzed
+5. Risk score is calculated
+6. Results are displayed in the dashboard
 
-# Instale as dependências
-npm install
+---
 
-# Inicie o servidor
-npm run dev
+## 🏗 Tech Stack
 
-🗺 Roadmap
-[ ] Análise de Bytecode de Smart Contracts.
-[ ] API Pública para varredura.
-[ ] Extensão para Browser.
-⚠️ Disclaimer
-Atenção: Ferramenta automatizada. Não substitui uma auditoria profissional. | Warning: Automated tool. Does not replace professional audit.
-👨‍💻 Autor
-Daniel Roberto Diniz
+Frontend
+
+- Next.js
+- TailwindCSS
+- React
+
+Web3
+
+- ethers.js
+- RainbowKit
+- Wagmi
+
+Backend
+
+- Node.js
+- Supabase
+
+Blockchain Networks
+
+- Ethereum
+- Polygon
+- Sepolia
+
+---
+
+## 📊 Features
+
+- Smart Contract Risk Analysis
+- Wallet Connection
+- Multi-chain support
+- Risk Score System
+- Security Signal Detection
+
+---
+
+## 🗺 Roadmap
+
+- [ ] Smart contract bytecode analysis
+- [ ] Public API
+- [ ] Browser extension
+- [ ] AI-assisted vulnerability detection
+
+---
+
+## ⚠️ Disclaimer
+
+Esta é uma ferramenta automatizada de análise.
+
+Ela **não substitui auditorias profissionais de smart contracts**.
+
+This tool **does not replace professional smart contract audits**.
+
+---
+
+## 👨‍💻 Author
+
+Daniel Roberto Diniz  
 Founder — Agência IA Diniz
+
+GitHub  
+https://github.com/dinizdaniel284
