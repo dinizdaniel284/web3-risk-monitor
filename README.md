@@ -1,8 +1,8 @@
 # 🛡️ Web3 Risk Monitor — Agência IA Diniz
 
-![Demo](./assets/demo.gif)
+![Web3 Risk Monitor Demo](assets/Recording_20260315_10....gif)
 
-Al-powered smart contract risk analyzer with real-time history tracking and multi-chain support.
+AI-powered smart contract risk analyzer with real-time history tracking and multi-chain support.
 
 ---
 
@@ -61,24 +61,24 @@ Based on these signals, a **risk score from 0 to 100** is generated.
 
 ## 🏗 Tech Stack
 
-Frontend
+### Frontend
 
 - Next.js
-- TailwindCSS
 - React
+- TailwindCSS
 
-Web3
+### Web3
 
 - ethers.js
 - RainbowKit
 - Wagmi
 
-Backend
+### Backend
 
 - Node.js
 - Supabase
 
-Blockchain Networks
+### Blockchain Networks
 
 - Ethereum
 - Polygon
