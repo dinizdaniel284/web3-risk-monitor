@@ -1,124 +1,124 @@
-# 🛡️ Web3 Risk Monitor — Agência IA Diniz
+<p align="center">
+<img src="https://media.giphy.com/media/l0HlQ7LRalQqdWfao/giphy.gif" width="100%">
+</p>
 
-![Web3 Risk Monitor Demo](assets/Recording_20260315_10....gif)
+<h1 align="center">
+🛡️ Web3 Risk Monitor
+</h1>
 
-AI-powered smart contract risk analyzer with real-time history tracking and multi-chain support.
+<p align="center">
+AI-Powered Smart Contract Risk Analyzer
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/STATUS-IN_DEVELOPMENT-0078D4?style=for-the-badge">
+  <img src="https://img.shields.io/badge/WEB3-SECURITY-222222?style=for-the-badge&logo=ethereum">
+  <img src="https://img.shields.io/badge/NEXT.JS-14-black?style=for-the-badge&logo=nextdotjs">
+</p>
 
 ---
 
-## 🚀 Live Demo
+# 🎬 Demo
 
-Acesse a aplicação:
+<p align="center">
+
+![Web3 Risk Monitor Demo](assets/Recording_20260315_1047392-ezgif.com-video-to-gif-converter%20(1).gif)
+
+</p>
+
+---
+
+# 🚀 Live Demo
+
+**Access the application**
 
 https://web3-risk-monitor-zewe.vercel.app/
 
-Deployment powered by Vercel 🌍
+Deployment powered by **Vercel**
 
 ---
 
-## 🌍 About the Project
+# 🌍 About the Project
 
 ### 🇧🇷 Português
 
-O **Web3 Risk Monitor** é uma plataforma de segurança para análise de **Smart Contracts**.
+Plataforma de segurança para análise de **Smart Contracts**.
 
-A ferramenta analisa contratos na blockchain e identifica padrões de risco como:
+A aplicação identifica:
 
-- contratos com dono (centralização)
+- vulnerabilidades
+- padrões suspeitos
+- centralização de controle
 - proxies atualizáveis
-- carteiras comuns enviadas como contrato
-- padrões suspeitos de governança
 
-Com base nesses sinais, o sistema gera uma **pontuação de risco de 0 a 100**.
+e gera um **Risk Score de 0 a 100** para ajudar usuários a avaliar riscos antes de interagir com contratos.
 
 ---
 
 ### 🇺🇸 English
 
-**Web3 Risk Monitor** is a security platform for **smart contract analysis**.
+Security platform for **Smart Contract analysis**.
 
-The system analyzes blockchain contracts and detects risk patterns such as:
+The system detects:
 
-- contract ownership (centralization risk)
-- upgradeable proxy contracts
-- wallet vs contract detection
-- suspicious governance patterns
+- vulnerabilities
+- suspicious patterns
+- centralization risks
+- upgradeable proxies
 
-Based on these signals, a **risk score from 0 to 100** is generated.
-
----
-
-## ⚙️ How It Works
-
-1. User connects wallet
-2. Contract address is inserted
-3. Blockchain data is queried
-4. Security signals are analyzed
-5. Risk score is calculated
-6. Results are displayed in the dashboard
+and generates a **risk score from 0 to 100** to help users evaluate contracts before interacting with them.
 
 ---
 
-## 🏗 Tech Stack
+# 🏗 Architecture
 
-### Frontend
+User │ ▼ Frontend (Next.js + Tailwind) │ ▼ Web3 Layer (Ethers.js) │ ▼ Blockchain Networks Ethereum / Polygon │ ▼ Risk Analysis Engine
 
-- Next.js
-- React
-- TailwindCSS
-
-### Web3
-
-- ethers.js
-- RainbowKit
-- Wagmi
-
-### Backend
-
-- Node.js
-- Supabase
-
-### Blockchain Networks
-
-- Ethereum
-- Polygon
-- Sepolia
 
 ---
 
-## 📊 Features
+# ⚙ Tech Stack
 
-- Smart Contract Risk Analysis
-- Wallet Connection
-- Multi-chain support
-- Risk Score System
-- Security Signal Detection
+Frontend  
+- Next.js 14  
+- React  
+- TailwindCSS  
 
----
+Web3  
+- Ethers.js  
+- MetaMask Integration  
 
-## 🗺 Roadmap
+Backend  
+- Node.js  
+- Supabase  
 
-- [ ] Smart contract bytecode analysis
-- [ ] Public API
-- [ ] Browser extension
-- [ ] AI-assisted vulnerability detection
-
----
-
-## ⚠️ Disclaimer
-
-Esta é uma ferramenta automatizada de análise.
-
-Ela **não substitui auditorias profissionais de smart contracts**.
-
-This tool **does not replace professional smart contract audits**.
+Deployment  
+- Vercel  
 
 ---
 
-## 👨‍💻 Author
+# 🚀 Getting Started
 
-Daniel Roberto Diniz  
+Clone the repository
+
+```bash
+git clone https://github.com/dinizdaniel284/web3-risk-monitor.git
+Install dependencies
+Bash
+
+npm install
+Run development server
+Bash
+
+npm run dev
+🗺 Roadmap
+[ ] Bytecode Smart Contract Analysis
+[ ] Public Risk Analysis API
+[ ] Browser Extension
+[ ] Multi-Chain Monitoring
+⚠ Disclaimer
+Automated tool.
+Does not replace a professional smart contract audit.
+👨‍💻 Author
+Daniel Roberto Diniz
 Founder — Agência IA Diniz
-
-GitHub  
-https://github.com/dinizdaniel284
