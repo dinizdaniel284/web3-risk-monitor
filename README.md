@@ -30,7 +30,7 @@ AI-Powered Smart Contract Risk Analyzer
 
 # 🚀 Live Demo
 
-**Access the application**
+Access the application:
 
 https://web3-risk-monitor-zewe.vercel.app/
 
@@ -61,39 +61,61 @@ Security platform for **Smart Contract analysis**.
 
 The system detects:
 
-- vulnerabilities
-- suspicious patterns
-- centralization risks
-- upgradeable proxies
+- vulnerabilities  
+- suspicious patterns  
+- centralization risks  
+- upgradeable proxies  
 
 and generates a **risk score from 0 to 100** to help users evaluate contracts before interacting with them.
 
 ---
 
+# 🔍 Features
+
+- Smart Contract Risk Score (0–100)
+- Proxy Contract Detection
+- Ownership Centralization Detection
+- Wallet Connection via MetaMask
+- Multi-Chain Support (Ethereum / Polygon)
+- Security Signals and Alerts
+- Smart Contract Address Validation
+
+---
+
+# 💡 Use Cases
+
+• DeFi investors checking smart contract risks  
+• Web3 security researchers  
+• NFT traders verifying contract safety  
+• DAO governance analysis  
+• Developers auditing third-party contracts  
+
+---
+
 # 🏗 Architecture
 
-User │ ▼ Frontend (Next.js + Tailwind) │ ▼ Web3 Layer (Ethers.js) │ ▼ Blockchain Networks Ethereum / Polygon │ ▼ Risk Analysis Engine
+User │ ▼ Frontend (Next.js + TailwindCSS) │ ▼ Web3 Layer (Ethers.js) │ ▼ Blockchain RPC Providers │ ▼ Risk Analysis Engine │ ▼ Risk Score Output
 
 
 ---
 
 # ⚙ Tech Stack
 
-Frontend  
-- Next.js 14  
-- React  
-- TailwindCSS  
+### Frontend
+- Next.js 14
+- React
+- TailwindCSS
 
-Web3  
-- Ethers.js  
-- MetaMask Integration  
+### Web3
+- Ethers.js
+- MetaMask Integration
 
-Backend  
-- Node.js  
-- Supabase  
+### Backend
+- Node.js
+- Supabase
 
-Deployment  
-- Vercel  
+### Deployment
+- Vercel
 
 ---
 
@@ -116,9 +138,18 @@ npm run dev
 [ ] Public Risk Analysis API
 [ ] Browser Extension
 [ ] Multi-Chain Monitoring
+[ ] Historical Risk Tracking
+[ ] AI-based Vulnerability Detection
+🤝 Contributing
+Contributions are welcome.
+Fork the repository
+Create a feature branch
+Commit your changes
+Open a Pull Request
 ⚠ Disclaimer
-Automated tool.
-Does not replace a professional smart contract audit.
+This is an automated analysis tool.
+It does not replace a professional smart contract audit.
+Always conduct proper security reviews before interacting with blockchain contracts.
 👨‍💻 Author
 Daniel Roberto Diniz
 Founder — Agência IA Diniz
