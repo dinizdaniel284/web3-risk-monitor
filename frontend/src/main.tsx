@@ -4,6 +4,10 @@ import App from "./App";
 import "./index.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
+// 🌍 i18n
+import "./i18n/index";
+import i18n from "./i18n/index";
+
 import {
   getDefaultConfig,
   RainbowKitProvider,
@@ -16,9 +20,6 @@ import { mainnet, polygon, sepolia } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 
-import "./i18n/index";
-import i18n from "./i18n/index";
-
 const queryClient = new QueryClient();
 
 const config = getDefaultConfig({
@@ -28,15 +29,40 @@ const config = getDefaultConfig({
   ssr: false
 });
 
+// 🔥 WRAPPER INTELIGENTE (resolve bug de idioma)
+function Providers({ children }: { children: React.ReactNode }) {
+  const [lang, setLang] = React.useState(i18n.language);
+
+  React.useEffect(() => {
+    const onLangChange = (lng: string) => {
+      setLang(lng);
+    };
+
+    i18n.on("languageChanged", onLangChange);
+
+    return () => {
+      i18n.off("languageChanged", onLangChange);
+    };
+  }, []);
+
+  return (
+    <RainbowKitProvider
+      key={lang} // 🔥 força re-render ao trocar idioma
+      theme={darkTheme()}
+      modalSize="compact"
+      locale={lang === "pt" ? "pt-BR" : "en-US"}
+    >
+      {children}
+    </RainbowKitProvider>
+  );
+}
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider
-          theme={darkTheme()}
-          modalSize="compact"
-          locale={i18n.language === "pt" ? "pt-BR" : "en-US"}
-        >
+        
+        <Providers>
           <App />
 
           <Toaster
@@ -44,8 +70,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             position="top-right"
             closeButton
           />
+        </Providers>
 
-        </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   </React.StrictMode>
