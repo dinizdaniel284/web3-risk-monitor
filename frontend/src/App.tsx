@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { publicClient } from "./lib/viem";
 
 // 🔥 IMPORTANTE (SEU CORE AGORA MANDA NO JOGO)
-import { analyzeSmartContract } from "../core/riskEngine";
+import { analyzeSmartContract } from "./core/riskEngine";
 
 const cryptoQuotes = [
   { symbol: "BTC", price: "$68,543", change: "+1.2%" },
