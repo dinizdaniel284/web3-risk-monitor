@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { useAccount, usePublicClient } from "wagmi";
+import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { BrainCircuit, Globe, ShieldAlert, CheckCircle2, Zap, Search, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { analyzeSmartContract } from "./core/riskEngine";
+import { publicClient } from "./lib/viem"; // 🔥 Usando o seu cliente estável
 
 function App() {
   const { isConnected, address } = useAccount();
   const { t, i18n } = useTranslation();
-  const client = usePublicClient(); 
 
   const [contractAddress, setContractAddress] = useState("");
   const [analysis, setAnalysis] = useState<any>(null);
@@ -29,9 +29,8 @@ function App() {
     const tid = toast.loading(t('analyzing'));
 
     try {
-      if (!client) throw new Error(t('waiting_connection'));
-
-      const bytecode = await client.getBytecode({
+      // 🚀 Chamada direta ao cliente da LlamaRPC/Cloudflare configurado no seu lib/viem.ts
+      const bytecode = await publicClient.getBytecode({
         address: contractAddress as `0x${string}`
       });
 
@@ -43,7 +42,8 @@ function App() {
       setAnalysis(result);
       toast.success(t('safe'), { id: tid });
     } catch (err: any) {
-      toast.error(err.message || t('error_blockchain_connection'), { id: tid });
+      console.error(err);
+      toast.error(t('error_blockchain_connection'), { id: tid });
     } finally {
       setLoading(false);
     }
@@ -51,10 +51,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#020617] text-slate-100 font-sans selection:bg-sky-500/30">
-      {/* GLOW DE FUNDO */}
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-sky-500/10 blur-[120px] pointer-events-none" />
 
-      {/* HEADER PREMIUM */}
       <header className="sticky top-0 z-50 border-b border-white/5 bg-slate-950/80 backdrop-blur-md px-6 py-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-gradient-to-tr from-sky-500 to-indigo-600 rounded-xl shadow-[0_0_20px_rgba(14,165,233,0.4)]">
@@ -70,15 +68,13 @@ function App() {
 
         <button 
           onClick={toggleLanguage}
-          className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium hover:bg-white/10 transition-all"
+          className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium hover:bg-white/10 transition-all uppercase"
         >
-          {i18n.language.toUpperCase()}
+          {i18n.language}
         </button>
       </header>
 
       <main className="relative z-10 max-w-2xl mx-auto px-6 py-12 space-y-10">
-        
-        {/* HERO SECTION */}
         <section className="text-center space-y-4">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -91,7 +87,6 @@ function App() {
           </p>
         </section>
 
-        {/* INPUT BOX - GLASSMORPHISM */}
         <section className="p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent shadow-2xl">
           <div className="bg-slate-900/90 rounded-[22px] p-6 space-y-4 backdrop-blur-sm">
             <div className="relative">
@@ -119,7 +114,6 @@ function App() {
           </div>
         </section>
 
-        {/* RESULTS AREA */}
         <AnimatePresence>
           {analysis && (
             <motion.div 
@@ -127,8 +121,7 @@ function App() {
               animate={{ opacity: 1, scale: 1 }}
               className="space-y-6"
             >
-              {/* SCORE CARD */}
-              <div className="relative overflow-hidden p-8 rounded-3xl bg-slate-900 border border-white/5 text-center">
+              <div className="relative overflow-hidden p-8 rounded-3xl bg-slate-900 border border-white/5 text-center shadow-inner">
                 <div className={`absolute top-0 left-0 w-full h-1 ${analysis.score > 60 ? 'bg-green-500' : 'bg-red-500'}`} />
                 <h3 className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2">{t('risk_score')}</h3>
                 <div className={`text-7xl font-black ${analysis.score > 60 ? 'text-green-400' : 'text-red-500'}`}>
@@ -139,7 +132,6 @@ function App() {
                 </p>
               </div>
 
-              {/* DETAILS GRID */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {analysis.signals.map((s: any, i: number) => (
                   <div key={i} className="flex items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
@@ -157,7 +149,6 @@ function App() {
         </AnimatePresence>
       </main>
 
-      {/* FOOTER FIXED */}
       <footer className="fixed bottom-0 left-0 right-0 p-6 bg-slate-950/80 backdrop-blur-xl border-t border-white/5 flex justify-center">
         <ConnectButton accountStatus="address" showBalance={false} chainStatus="icon" />
       </footer>
@@ -166,4 +157,4 @@ function App() {
 }
 
 export default App;
-                                                                                 
+    
