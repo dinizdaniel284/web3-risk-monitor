@@ -1,10 +1,9 @@
+@import "@rainbow-me/rainbowkit/styles.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "@rainbow-me/rainbowkit/styles.css";
-
-/* Se quiser manter a fonte Inter que estava no @theme: */
 body {
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
