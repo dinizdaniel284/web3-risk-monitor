@@ -32,7 +32,7 @@ AI-Powered Smart Contract Risk Analyzer
 
 Access the application:
 
-https://web3-risk-monitor-zewe.vercel.app/
+https://web3-risk-monitor.vercel.app
 
 Deployment powered by **Vercel**
 
