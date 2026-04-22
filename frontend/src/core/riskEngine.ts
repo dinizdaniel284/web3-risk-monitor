@@ -1,33 +1,27 @@
-export function analyzeSmartContract(bytecode: string | undefined) {
-  let score = 50;
-  const signals: { label: string; value: string }[] = [];
+export function analyzeSmartContract(bytecode: string) {
+  const signals = [];
+  let riskPoints = 0;
 
-  if (!bytecode || bytecode === "0x") {
-    score = 10;
-    signals.push({ label: "Status", value: "Contrato vazio ou não encontrado" });
-  } else {
-    score += 30;
-    signals.push({ label: "Bytecode", value: "Válido detectado" });
-
-    if (bytecode.length < 500) {
-      score -= 20;
-      signals.push({ label: "Tamanho", value: "Muito pequeno (Possível Risco)" });
-    }
-
-    if (bytecode.includes("delegatecall")) {
-      score -= 15;
-      signals.push({ label: "Segurança", value: "Uso de delegatecall detectado" });
-    }
-    
-    // Bônus: verifica se o contrato é muito complexo
-    if (bytecode.length > 5000) {
-      score += 10;
-      signals.push({ label: "Complexidade", value: "Alta (Contrato Robusto)" });
-    }
+  if (bytecode.includes("ff")) {
+    signals.push({ label: "Self-Destruct", value: "signals.self_destruct" });
+    riskPoints += 40;
+  }
+  if (bytecode.includes("f4")) {
+    signals.push({ label: "DelegateCall", value: "signals.delegate_call" });
+    riskPoints += 20;
+  }
+  if (bytecode.includes("5b600080fd")) {
+    signals.push({ label: "Honeypot", value: "signals.withdraw_lock" });
+    riskPoints += 30;
+  }
+  if (bytecode.includes("363d3d373d3d3d363d73")) {
+    signals.push({ label: "Proxy", value: "signals.proxy" });
+    riskPoints += 15;
   }
 
+  const score = Math.max(0, 100 - riskPoints);
   return {
-    score: Math.max(0, Math.min(100, score)),
-    signals
+    score,
+    signals: signals.length > 0 ? signals : [{ label: "Status", value: "signals.clean" }]
   };
 }
