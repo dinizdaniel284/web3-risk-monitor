@@ -18,8 +18,8 @@ import {
 import { toast } from "sonner";
 import { publicClient } from "./lib/viem";
 
-// 🔥 IMPORTANTE (SEU CORE AGORA MANDA NO JOGO)
-import { analyzeSmartContract } from "../core/riskEngine";
+// 🔥 AJUSTADO: Import correto para a pasta src/core/
+import { analyzeSmartContract } from "./core/riskEngine";
 
 const cryptoQuotes = [
   { symbol: "BTC", price: "$68,543", change: "+1.2%" },
@@ -38,7 +38,7 @@ function App() {
   const toggleLanguage = () =>
     i18n.changeLanguage(i18n.language === "pt" ? "en" : "pt");
 
-  // 🚀 AGORA USA CORE REAL
+  // 🚀 Lógica de análise
   const analyzeContract = async () => {
     if (!contractAddress.startsWith("0x") || contractAddress.length !== 42) {
       toast.error("Endereço inválido");
