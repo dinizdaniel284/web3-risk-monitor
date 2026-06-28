@@ -4,7 +4,7 @@ import { CheckCircle2, AlertTriangle, ShieldAlert, Shield, ShieldCheck } from 'l
 
 interface RiskCardProps {
   score: number;
-  signals: string[];
+  signals: any[]; // Alterado para any[] para evitar quebras se o core injetar objetos
   isLoading?: boolean; // Controla o estado de consulta
 }
 
@@ -80,26 +80,35 @@ export default function RiskCard({ score, signals, isLoading = false }: RiskCard
 
       <div className="space-y-3">
         {signals.length > 0 ? (
-          signals.map((sig, i) => (
-            <div 
-              key={i} 
-              className="flex gap-3 text-xs items-start p-3.5 bg-slate-950/60 rounded-xl border border-white/5 animate-in fade-in slide-in-from-bottom-1"
-            >
-              {/* Ícones específicos dependendo da severidade do sinal */}
-              {sig === 'signal_not_contract' ? (
-                <ShieldAlert size={16} className="text-red-400 shrink-0 mt-0.5" />
-              ) : isSafe ? (
-                <ShieldCheck size={16} className="text-green-400 shrink-0 mt-0.5" />
-              ) : (
-                <AlertTriangle size={16} className="text-yellow-400 shrink-0 mt-0.5" />
-              )}
-              
-              {/* Tradução dinâmica do sinal vindo do Core Engine */}
-              <span className="text-slate-300 font-medium leading-relaxed">
-                {t(sig) || sig}
-              </span>
-            </div>
-          ))
+          signals.map((sig, i) => {
+            // 🛠️ TRATAMENTO ANTI [object Object]: Garante que a chave vire string
+            const currentSignal = typeof sig === 'object' ? (sig?.id || JSON.stringify(sig)) : sig;
+            
+            // Tenta traduzir. Se o retorno de t() por algum motivo bizarro virar objeto, joga o fallback da string pura
+            const translatedResult = t(currentSignal);
+            const renderText = typeof translatedResult === 'object' ? currentSignal : (translatedResult || currentSignal);
+
+            return (
+              <div 
+                key={i} 
+                className="flex gap-3 text-xs items-start p-3.5 bg-slate-950/60 rounded-xl border border-white/5 animate-in fade-in slide-in-from-bottom-1"
+              >
+                {/* Ícones específicos dependendo da severidade do sinal */}
+                {currentSignal === 'signal_not_contract' ? (
+                  <ShieldAlert size={16} className="text-red-400 shrink-0 mt-0.5" />
+                ) : isSafe ? (
+                  <ShieldCheck size={16} className="text-green-400 shrink-0 mt-0.5" />
+                ) : (
+                  <AlertTriangle size={16} className="text-yellow-400 shrink-0 mt-0.5" />
+                )}
+                
+                {/* Tradução dinâmica do sinal 100% segura contra quebras de objeto */}
+                <span className="text-slate-300 font-medium leading-relaxed">
+                  {renderText}
+                </span>
+              </div>
+            );
+          })
         ) : (
           <div className="flex gap-2 text-xs items-center text-slate-500 italic py-4 justify-center border border-dashed border-slate-900 rounded-xl">
             <CheckCircle2 size={16} className="opacity-50" />
