@@ -105,8 +105,8 @@ function App() {
           </div>
         </div>
 
-        {/* SELETOR DE IDIOMA DROPDOWN */}
-        <div className="relative">
+        {/* SELETOR DE IDIOMA DROPDOWN AJUSTADO PARA MOBILE (ABRE PARA O LADO) */}
+        <div className="relative z-50">
           <button
             onClick={() => setLangDropdownOpen(!langDropdownOpen)}
             className="flex items-center gap-2 px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-medium transition-all"
@@ -118,10 +118,10 @@ function App() {
           <AnimatePresence>
             {langDropdownOpen && (
               <motion.div
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -5 }}
-                className="absolute right-0 mt-2 w-28 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl overflow-hidden z-50"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
+                className="absolute right-full top-0 mr-2 w-28 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl overflow-hidden z-[100]"
               >
                 <button
                   onClick={() => changeLanguage("pt")}
@@ -163,7 +163,7 @@ function App() {
         </motion.div>
       </div>
 
-      {/* CONTEÚDO PRINCIPAL TRANSLADADO */}
+      {/* CONTEÚDO PRINCIPAL */}
       <main className="relative z-10 flex-1 max-w-xl mx-auto w-full px-5 py-10 space-y-6">
 
         {/* WALLET */}
@@ -189,7 +189,7 @@ function App() {
           </p>
         </section>
 
-        {/* INPUT & BOTÃO COM TRADUÇÃO DINÂMICA */}
+        {/* INPUT & BOTÃO */}
         <section className="bg-slate-900/60 backdrop-blur-md border border-slate-900 p-5 rounded-2xl space-y-4 shadow-xl">
           <input
             value={contractAddress}
@@ -207,7 +207,7 @@ function App() {
           </button>
         </section>
 
-        {/* CONTAINER DO CARREGAMENTO COM ANIMATE PRESENCE */}
+        {/* CONTAINER DO CARREGAMENTO */}
         <AnimatePresence mode="wait">
           {loading ? (
             <motion.div
@@ -245,3 +245,4 @@ function App() {
 }
 
 export default App;
+      
